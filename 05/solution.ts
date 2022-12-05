@@ -2,17 +2,25 @@ import { readFileSync } from 'fs';
 
 
 
-const initialStack = readFileSync('./input.txt', 'utf-8')
+
+
+const initialStack2 = readFileSync('./input.txt', 'utf-8')
   .split('\n\n')[0]
   .split('\n')
-  .reduce((acc, curr) => {
-    for (let i = 0; i < curr.length - 1; i++) {
-      if ((i - 1) % 4 === 0 && curr[i] !== ' ' && curr[i].charCodeAt(0) > 57) {
-        acc[(i - 1) / 4 + 1] = [...(acc[(i - 1) / 4 + 1] || []), curr[i]];
-      }
-    }
-    return acc;
-  }, {} as { [key: number]: string[] });
+  .reduce((acc, curr, index, arr) =>
+    (index === arr.length - 1) ? acc :
+      curr.split('').reduce((a, c, i) =>
+        ((i - 1) % 4 === 0 && c !== ' ' && c.charCodeAt(0) > 57) ?
+          ({
+            ...a,
+            [(i - 1) / 4 + 1]: [...(a[(i - 1) / 4 + 1] || []), c]
+          })
+          : a
+        , acc)
+    , {} as { [key: number]: string[] });
+
+
+
 
 
 const moveFro = (arr: string[], elems: number) => {
@@ -33,7 +41,20 @@ const solution1 = readFileSync('./input.txt', 'utf-8')
     ],
     [parseInt(curr.split(' ')[3])]: acc[parseInt(curr.split(' ')[3])].slice(parseInt(curr.split(' ')[1])),
   }
-  ), initialStack);
+  ), readFileSync('./input.txt', 'utf-8')
+    .split('\n\n')[0]
+    .split('\n')
+    .reduce((acc, curr, index, arr) =>
+      (index === arr.length - 1) ? acc :
+        curr.split('').reduce((a, c, i) =>
+          ((i - 1) % 4 === 0 && c !== ' ' && c.charCodeAt(0) > 57) ?
+            ({
+              ...a,
+              [(i - 1) / 4 + 1]: [...(a[(i - 1) / 4 + 1] || []), c]
+            })
+            : a
+          , acc)
+      , {} as { [key: number]: string[] }));
 
 const result = Object.values(solution1).reduce((acc, curr) => acc + (curr[0] || ''), '');
 
@@ -48,9 +69,3 @@ console.log(result);
 console.log(solution1);
 // console.log(solution2);
 
-
-
-
-// .map((value, index, arr) => index === 0 ? value : [arr[0], value]).slice(1)
-
-console.log(initialStack);
