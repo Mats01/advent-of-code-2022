@@ -1,28 +1,27 @@
 import { readFileSync } from 'fs';
 
-// 5 12 17
+
 
 const solution1 = readFileSync('./input.txt', 'utf-8')
   .split('\n\n')
   .map((line) => line.split('\n'))
   .map((line, index) => index !== 0 ? line : line.reduce((acc, curr) => {
-    const newAcc = acc;
     for (let i = 0; i < curr.length - 1; i++) {
       if ((i - 1) % 4 === 0 && curr[i] !== ' ' && curr[i].charCodeAt(0) > 57) {
-        newAcc[(i - 1) / 4 + 1].push(curr[i]);
+        acc[(i - 1) / 4] = [...(acc[(i - 1) / 4] || []), curr[i]];
       }
     }
-    return newAcc;
-  }, { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] } as { [key: number]: string[] }))
-  .reduce((acc, curr) => {
-    if (!Array.isArray(curr)) {
+    return acc;
+  }, [] as any[]))
+  .reduce((acc, curr, index) => {
+    if (index === 0) {
       return curr
     };
-    const newAcc = acc as { [key: number]: string[] };
+    const newAcc = acc as string[][];
     for (const input of curr) {
       const ammount = parseInt(input.split(' ')[1]);
-      const sourceIndex = parseInt(input.split(' ')[3]);
-      const destinationIndex = parseInt(input.split(' ')[5]);
+      const sourceIndex = parseInt(input.split(' ')[3]) - 1;
+      const destinationIndex = parseInt(input.split(' ')[5]) - 1;
 
 
       for (let i = 0; i < ammount; i++) {
@@ -34,9 +33,9 @@ const solution1 = readFileSync('./input.txt', 'utf-8')
 
     }
     return newAcc;
-  }, { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] } as { [key: number]: string[] });
+  }, [] as any[]);
 
-const result = Object.values(solution1).reduce((acc, curr) => acc + (curr[0] || ''), '');
+const result = solution1.reduce((acc, curr) => acc + (curr[0] || ''), '');
 
 
 const solution2 = readFileSync('./input.txt', 'utf-8')
