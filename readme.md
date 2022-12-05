@@ -40,3 +40,11 @@ const solution1 = readFileSync('./input.txt', 'utf-8').split('\n').map((line) =>
 
 const solution2 = readFileSync('./input.txt', 'utf-8').split('\n').map((line) => [line.split(',')[0], line.split(',')[1]]).map(([fistElf, secondElf]) => [fistElf.split('-').map(s => parseInt(s)), secondElf.split('-').map(s => parseInt(s))]).map(([fistElf, secondElf]) => [Array.from({ length: fistElf[1] - fistElf[0] + 1 }, (_, i) => i + fistElf[0]), Array.from({ length: secondElf[1] - secondElf[0] + 1 }, (_, i) => i + secondElf[0])]).map(([fistElf, secondElf]) => (fistElf.filter((value) => secondElf.includes(value)).length > 0) ? 1 : 0 as number).reduce((acc, curr) => acc + curr, 0);
 ```
+
+## Day 5
+[https://adventofcode.com/2022/day/5](https://adventofcode.com/2022/day/5)
+```typescript
+const solution3 = Object.values(readFileSync('./input.txt', 'utf-8').split('\n\n')[1].split('\n').reduce((acc, curr) => ({ ...acc, [parseInt(curr.split(' ')[5])]: [...acc[parseInt(curr.split(' ')[3])].slice(0, parseInt(curr.split(' ')[1])).reverse(), ...acc[parseInt(curr.split(' ')[5])]], [parseInt(curr.split(' ')[3])]: acc[parseInt(curr.split(' ')[3])].slice(parseInt(curr.split(' ')[1])), }), readFileSync('./input.txt', 'utf-8').split('\n\n')[0].split('\n').reduce((acc, curr, index, arr) => (index === arr.length - 1) ? acc : curr.split('').reduce((a, c, i) => ((i - 1) % 4 === 0 && c !== ' ' && c.charCodeAt(0) > 57) ? ({ ...a, [(i - 1) / 4 + 1]: [...(a[(i - 1) / 4 + 1] || []), c] }) : a, acc), {} as { [key: number]: string[] }))).reduce((acc, curr) => acc + (curr[0] || ''), '');
+
+const solution2 = Object.values(readFileSync('./input.txt', 'utf-8').split('\n\n')[1].split('\n').reduce((acc, curr) => ({ ...acc, [parseInt(curr.split(' ')[5])]: [...acc[parseInt(curr.split(' ')[3])].slice(0, parseInt(curr.split(' ')[1])), ...acc[parseInt(curr.split(' ')[5])]], [parseInt(curr.split(' ')[3])]: acc[parseInt(curr.split(' ')[3])].slice(parseInt(curr.split(' ')[1])), }), readFileSync('./input.txt', 'utf-8').split('\n\n')[0].split('\n').reduce((acc, curr, index, arr) => (index === arr.length - 1) ? acc : curr.split('').reduce((a, c, i) => ((i - 1) % 4 === 0 && c !== ' ' && c.charCodeAt(0) > 57) ? ({ ...a, [(i - 1) / 4 + 1]: [...(a[(i - 1) / 4 + 1] || []), c] }) : a, acc), {} as { [key: number]: string[] }))).reduce((acc, curr) => acc + (curr[0] || ''), '');
+```
