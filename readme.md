@@ -48,3 +48,11 @@ const solution1 = Object.values(readFileSync('./input.txt', 'utf-8').split('\n\n
 
 const solution2 = Object.values(readFileSync('./input.txt', 'utf-8').split('\n\n')[1].split('\n').reduce((acc, curr) => ({ ...acc, [parseInt(curr.split(' ')[5])]: [...acc[parseInt(curr.split(' ')[3])].slice(0, parseInt(curr.split(' ')[1])), ...acc[parseInt(curr.split(' ')[5])]], [parseInt(curr.split(' ')[3])]: acc[parseInt(curr.split(' ')[3])].slice(parseInt(curr.split(' ')[1])), }), readFileSync('./input.txt', 'utf-8').split('\n\n')[0].split('\n').reduce((acc, curr, index, arr) => (index === arr.length - 1) ? acc : curr.split('').reduce((a, c, i) => ((i - 1) % 4 === 0 && c !== ' ' && c.charCodeAt(0) > 57) ? ({ ...a, [(i - 1) / 4 + 1]: [...(a[(i - 1) / 4 + 1] || []), c] }) : a, acc), {} as { [key: number]: string[] }))).reduce((acc, curr) => acc + (curr[0] || ''), '');
 ```
+
+## Day 6
+[https://adventofcode.com/2022/day/6](https://adventofcode.com/2022/day/6)
+```typescript
+const solution1 = readFileSync('./input.txt', 'utf-8').split('').reduce((acc, curr) => acc[0].length < 4 ? [[...acc[0], curr], 4] : (acc[0] as string[]).filter((v, i) => acc[0].indexOf(v) === i).length >= 4 ? acc : [[...acc[0].slice(1), curr], acc[1] + 1], [[], 0] as any[])[1];
+
+const solution2 = readFileSync('./input.txt', 'utf-8').split('').reduce((acc, curr) => acc[0].length < 14 ? [[...acc[0], curr], 14] : (acc[0] as string[]).filter((v, i) => acc[0].indexOf(v) === i).length >= 14 ? acc : [[...acc[0].slice(1), curr], acc[1] + 1], [[], 0] as any[])[1];
+```
