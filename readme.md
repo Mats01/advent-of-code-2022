@@ -155,4 +155,9 @@ console.log(solution2);
 ```
 
 [https://adventofcode.com/2022/day/8](https://adventofcode.com/2022/day/8)
+```typescript
+const solution1 = readFileSync('input.txt', 'utf8').split('\n').map(line => line.split('').map(tree => parseInt(tree))).reduce((acc, row, i, arr) => acc + row.reduce((acc, curr, j) => acc + ((!row.slice(0, j).some(t => t >= curr) || !row.slice(j + 1).some(t => t >= curr) || !arr.slice(0, i).map(r => r[j]).some(t => t >= curr) || !arr.slice(i + 1).map(r => r[j]).some(t => t >= curr)) ? 1 : 0), 0), 0);
+
+const solution2 = readFileSync('input.txt', 'utf8').split('\n').map(line => line.split('').map(tree => parseInt(tree))).map((row, i, arr) => row.map((_, j) => row.slice(0, j).reduceRight((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0] * row.slice(j + 1).reduce((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0] * arr.slice(0, i).map(r => r[j]).reduceRight((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0] * arr.slice(i + 1).map(r => r[j]).reduce((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0])).flatMap(x => x).reduce((acc, curr) => Math.max(acc, curr), 0);
+```
 ![day 8 woods](day_8_woods.png)

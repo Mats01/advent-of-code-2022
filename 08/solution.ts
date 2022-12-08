@@ -70,7 +70,7 @@ const innerVisibleSum = innerVisible.reduce((acc, row) => acc + row.reduce((acc,
 
 
 
-const solution1 = innerVisibleSum;
+const solution1Old = innerVisibleSum;
 
 
 let maxScenicScore = 0;
@@ -134,11 +134,75 @@ for (let i = 0; i < height; i++) {
 
 innerVisible[position.y][position.x] = '🏆';
 
-for (let i = 0; i < height; i++) {
-  console.log(innerVisible[i].join(''));
+// for (let i = 0; i < height; i++) {
+//   console.log(innerVisible[i].join(''));
+// }
+
+
+console.log("solution1:", solution1Old);
+console.log("solution2:", maxScenicScore);
+
+
+
+
+const solution1 = readFileSync('input.txt', 'utf8')
+  .split('\n')
+  .map(line => line.split('').map(tree => parseInt(tree)))
+  .reduce((acc, row, i, arr) =>
+    acc + row.reduce((acc, curr, j) =>
+      acc +
+      (
+        (
+          !row.slice(0, j).some(t => t >= curr)
+          ||
+          !row.slice(j + 1).some(t => t >= curr)
+          ||
+          !arr.slice(0, i).map(r => r[j]).some(t => t >= curr)
+          ||
+          !arr.slice(i + 1).map(r => r[j]).some(t => t >= curr)
+        ) ? 1 : 0)
+
+      , 0)
+    , 0);
+
+
+const findEveryDirectionDistance = (arr: number[][], i: number, j: number) => {
+  const distanceLeft = arr[i].slice(0, j).reduceRight((acc, curr) =>
+    acc[1] ? acc : (curr >= arr[i][j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[]);
+
+  const distanceRight = arr[i].slice(j + 1).reduce((acc, curr) =>
+    acc[1] ? acc : (curr >= arr[i][j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[]);
+
+  const distanceUp = arr.slice(0, i).map(r => r[j]).reduceRight((acc, curr) =>
+    acc[1] ? acc : (curr >= arr[i][j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[]);
+
+  const distanceDown = arr.slice(i + 1).map(r => r[j]).reduce((acc, curr) =>
+    acc[1] ? acc : (curr >= arr[i][j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[]);
+
+
+  return distanceLeft[0] * distanceRight[0] * distanceUp[0] * distanceDown[0];
 }
 
 
-console.log("solution1:", solution1);
-console.log("solution2:", maxScenicScore);
+const solution2 = readFileSync('input.txt', 'utf8')
+  .split('\n')
+  .map(line => line.split('').map(tree => parseInt(tree)))
+  .map((row, i, arr) =>
+    row.map((_, j) =>
+      row.slice(0, j).reduceRight((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0]
+      *
+      row.slice(j + 1).reduce((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0]
+      *
+      arr.slice(0, i).map(r => r[j]).reduceRight((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0]
+      *
+      arr.slice(i + 1).map(r => r[j]).reduce((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0]
+    ))
+
+  .flatMap(x => x)
+  .reduce((acc, curr) => Math.max(acc, curr), 0);
+
+
+
+console.log("solution1OneLiner:", solution1);
+console.log("solution2OneLiner:", solution2);
 
