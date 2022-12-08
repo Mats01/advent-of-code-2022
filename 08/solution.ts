@@ -5,10 +5,20 @@ const input = readFileSync('input.txt', 'utf8').split('\n').map(line => line.spl
 const width = input[0].length;
 const height = input.length;
 
-const outerVisible = 2 * width + 2 * height - 4;
 
+let innerVisible: string[][] = [];
+for (let i = 0; i < height; i++) {
+  innerVisible[i] = [];
+  for (let j = 0; j < width; j++) {
+    if (i === 0 || i === height - 1 || j === 0 || j === width - 1) {
+      innerVisible[i][j] = '🌲';
+      continue;
+    }
+    innerVisible[i][j] = '..';
 
-const innerVisible = Array.from({ length: input.length }, () => Array.from({ length: input[0].length }, () => '..'));
+  }
+}
+
 
 
 input.forEach((row, i) => {
@@ -62,8 +72,6 @@ for (let i = 0; i < height; i++) {
 }
 
 
-// console.log('outerVisible', outerVisible);
-// console.log('innerVisible', innerVisibleSum);
 
-const solution1 = outerVisible + innerVisibleSum;
+const solution1 = innerVisibleSum;
 console.log("solution1:", solution1);
