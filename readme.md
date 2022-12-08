@@ -153,3 +153,6 @@ for (let [_, size] of Object.entries(allDirSizes)) {
 console.log(solution1);
 console.log(solution2);
 ```
+
+[https://adventofcode.com/2022/day/8](https://adventofcode.com/2022/day/8)
+![day 8 woods](day 8 woods.png)

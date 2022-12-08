@@ -67,11 +67,78 @@ const innerVisibleSum = innerVisible.reduce((acc, row) => acc + row.reduce((acc,
 
 
 
+
+
+
+const solution1 = innerVisibleSum;
+
+
+let maxScenicScore = 0;
+
+let position = { x: 0, y: 0 };
+
+for (let i = 0; i < height; i++) {
+  for (let j = 0; j < width; j++) {
+    // look left 
+    let myScore = 1;
+    let curr = 0;
+    for (let k = j - 1; k >= 0; k--) {
+      if (input[i][k] >= input[i][j]) {
+        curr++;
+        break;
+      }
+      curr++;
+    }
+    myScore *= curr;
+
+    // look right
+    curr = 0;
+    for (let k = j + 1; k < width; k++) {
+      if (input[i][k] >= input[i][j]) {
+        curr++;
+        break;
+      }
+      curr++;
+    }
+    myScore *= curr;
+
+    // look up
+    curr = 0;
+    for (let k = i - 1; k >= 0; k--) {
+      if (input[k][j] >= input[i][j]) {
+        curr++;
+        break;
+      }
+      curr++;
+    }
+    myScore *= curr;
+
+    // look down
+    curr = 0;
+    for (let k = i + 1; k < height; k++) {
+      if (input[k][j] >= input[i][j]) {
+        curr++;
+        break;
+      }
+      curr++;
+    }
+    myScore *= curr;
+
+    if (myScore > maxScenicScore) {
+      maxScenicScore = myScore;
+      position = { x: j, y: i };
+    }
+
+  }
+}
+
+innerVisible[position.y][position.x] = '🏆';
+
 for (let i = 0; i < height; i++) {
   console.log(innerVisible[i].join(''));
 }
 
 
-
-const solution1 = innerVisibleSum;
 console.log("solution1:", solution1);
+console.log("solution2:", maxScenicScore);
+
