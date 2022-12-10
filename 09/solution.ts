@@ -47,7 +47,59 @@ const solution1 = input.reduce((acc, line) => {
 }, { tailLocation: [0, 0], headLocation: [0, 0], visited: new Set<string>(['0,0']) }).visited.size;
 
 
-const solution2 = input.length;
+const solution2 = input.reduce((acc, line) => {
+  const direction = line[0];
+  const amount = line[1];
+
+  for (let i = 0; i < amount; i++) {
+    if (direction === 'R') {
+      acc.rope[0][0] += 1;
+    }
+    if (direction === 'L') {
+      acc.rope[0][0] -= 1;
+    }
+    if (direction === 'U') {
+      acc.rope[0][1] += 1;
+    }
+    if (direction === 'D') {
+      acc.rope[0][1] -= 1;
+    }
+    for (let i = 1; i < acc.rope.length; i++) {
+      let headLocation = acc.rope[i - 1];
+      let tailLocation = acc.rope[i];
+
+      const distanceX = Math.abs(headLocation[0] - tailLocation[0]);
+      const distanceY = Math.abs(headLocation[1] - tailLocation[1]);
+
+      // get the sum of the distances down to 1
+      const distance = Math.sqrt(distanceX * distanceX + distanceY + distanceY);
+      if (distance > 2) {
+        if (distanceX < distanceY) {
+          tailLocation[0] = headLocation[0];
+          tailLocation[1] += headLocation[1] - tailLocation[1] > 0 ? 1 : -1;
+        } else {
+          tailLocation[1] = headLocation[1];
+          tailLocation[0] += headLocation[0] - tailLocation[0] > 0 ? 1 : -1;
+        }
+      } else {
+        if (distanceY > 1) {
+          tailLocation[1] += headLocation[1] - tailLocation[1] > 0 ? 1 : -1;
+        }
+        if (distanceX > 1) {
+          tailLocation[0] += (headLocation[0] - tailLocation[0] > 0) ? 1 : -1;
+        }
+      }
+
+    }
+
+    acc.visited.add(acc.rope.at(-1).join(','));
+
+  }
+
+  return acc;
+
+}, { rope: new Array(10).fill(0).map(_ => [0, 0]), visited: new Set<string>(['0,0']) }).visited.size;
+
 
 console.log(solution1);
 console.log(solution2);

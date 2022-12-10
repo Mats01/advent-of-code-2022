@@ -134,9 +134,9 @@ for (let i = 0; i < height; i++) {
 
 innerVisible[position.y][position.x] = '🏆';
 
-// for (let i = 0; i < height; i++) {
-//   console.log(innerVisible[i].join(''));
-// }
+for (let i = 0; i < height; i++) {
+  console.log(innerVisible[i].join(''));
+}
 
 
 console.log("solution1:", solution1Old);
