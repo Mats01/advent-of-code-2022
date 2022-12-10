@@ -162,3 +162,14 @@ const solution1 = readFileSync('input.txt', 'utf8').split('\n').map(line => line
 const solution2 = readFileSync('input.txt', 'utf8').split('\n').map(line => line.split('').map(tree => parseInt(tree))).map((row, i, arr) => row.map((_, j) => row.slice(0, j).reduceRight((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0] * row.slice(j + 1).reduce((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0] * arr.slice(0, i).map(r => r[j]).reduceRight((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0] * arr.slice(i + 1).map(r => r[j]).reduce((acc, curr) => acc[1] ? acc : (curr >= row[j]) ? [acc[0] + 1, true] : [acc[0] + 1, false], [0, false] as any[])[0])).flatMap(x => x).reduce((acc, curr) => Math.max(acc, curr), 0);
 ```
 ![day 8 woods](day_8_woods.png)
+
+## Day 9
+... in progress
+
+## Day 10
+[https://adventofcode.com/2022/day/10](https://adventofcode.com/2022/day/10)
+```typescript
+const solution1 = (readFileSync('input.txt', 'utf8').split('\n').map(line => [line.split(' ')[0], parseInt(line.split(' ')[1])]) as any[]).reduce((acc, line) => (line[0] === 'noop') ? [...acc, acc.at(-1)] : [...acc, acc.at(-1), acc.at(-1) + line[1]], [1]).reduce((acc: number, line: number, i: number) => [20, 60, 100, 140, 180, 220].map(x => x - 1).includes(i) ? acc + (line * (i + 1)) : acc, 0);
+
+const solution2 = (readFileSync('input.txt', 'utf8').split('\n').map(line => [line.split(' ')[0], parseInt(line.split(' ')[1])]) as any[]).reduce((acc, line) => (line[0] === 'noop') ? [...acc, acc.at(-1)] : [...acc, acc.at(-1), acc.at(-1) + line[1]], [1]).map((_: number, i: number, arr: number[]) => new Array(3).fill(arr[i] - 1).map((x, i) => x + i).includes(i % 40) ? '#' : '.').reduce((acc: string, curr: string, i: number) => acc + curr + ((i + 1) % 40 === 0 ? "\n" : ""), '');
+```
